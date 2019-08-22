@@ -1,0 +1,24 @@
+一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法。
+
+思路：
+递归，每一跳都分支到1-target种情况，target=0说明到达终点
+
+public class Solution {
+    public int JumpFloorII(int target) {
+        helper(target);
+        return ans;
+    }
+    public void helper(int target)
+    {
+        if(target == 0)
+        {
+            ans++;
+            return;
+        }
+        for(int i=1;i<=target;i++)
+        {
+            helper(target-i);
+        }
+    }
+    private int ans=0;
+}
