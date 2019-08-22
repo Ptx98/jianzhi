@@ -1,0 +1,71 @@
+输入某二叉树的前序遍历和中序遍历的结果，请重建出该二叉树。
+假设输入的前序遍历和中序遍历的结果中都不含重复的数字。
+例如输入前序遍历序列{1,2,4,7,3,5,6,8}和中序遍历序列{4,7,2,1,5,3,8,6}，则重建二叉树并返回。
+
+java
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode reConstructBinaryTree(int [] pre,int [] in) {
+        if(pre.length == 0)
+            return null;
+        if(pre.length == 1)
+            return new TreeNode(pre[0]);
+        TreeNode ans = new TreeNode(pre[0]);
+        helper(ans,pre,in);
+        return ans;
+    };
+    public void helper(TreeNode ans,int [] pre,int [] in)
+    {
+        int target = 0;
+        while(pre[target] != ans.val)
+        {
+            target++;
+        }
+        target++;
+        boolean fleft=false,rflag=false;
+        while(target<pre.length){
+            //找左孩子
+            boolean flag = findLeftChild(ans.val,pre[target],in);
+            if(flag&&!fleft)
+            {
+                ans.left = new TreeNode(pre[target]);
+                fleft = true;
+                helper(ans.left,pre,in);
+            }
+            else if(!flag&&!rflag)
+            {
+                ans.right = new TreeNode(pre[target]);
+                rflag = true;
+                helper(ans.right,pre,in);
+                break;
+            }
+            target++;
+        }
+            
+    };
+    public boolean findLeftChild(int parent,int child,int [] in){
+        int pindex=0,cindex=0;
+        for(int i=0;i<in.length;i++){
+            if(in[i]==parent)
+                pindex = i;
+            if(in[i]==child)
+                cindex = i;
+        }
+        if(cindex<pindex){
+            return true;//左孩子
+        }
+        else{
+            return false;//右孩子
+        }
+    };
+}
+
+为什么超时？？
