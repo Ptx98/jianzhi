@@ -1,0 +1,60 @@
+
+输入两棵二叉树A，B，判断B是不是A的子结构。（ps：我们约定空树不是任意一个树的子结构）
+
+思路：递归
+
+注意：
+    1.根节点值相等继续判断递归判断左右子树是否满足子结构和根节点不相等递归判断左右子树是否存在是子结构的不同，要分为两个函数
+    2.第一种情况容易遗漏这几种情况：
+        root2为空则不管root1什么值都满足条件
+        root2不为空时root1为空返回false
+        root2为叶子节点且值相等时返回true
+    3.第二种情况
+        当前根节点值相等但是不满足条件，要继续遍历左右子树是否存在满足条件的子树
+ 
+ 
+ Java：
+ 
+ /**
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+public class Solution {
+    public boolean HasSubtree(TreeNode root1,TreeNode root2) {
+        if(root2 == null || root1 == null)
+            return false;
+        if(root1.val == root2.val){
+            boolean flag = helper(root1.left,root2.left) && helper(root1.right,root2.right);
+            if(!flag){
+                flag = HasSubtree(root1.left,root2) || HasSubtree(root1.right,root2);
+            }
+            return flag;
+        }
+        else{
+            return HasSubtree(root1.left,root2) || HasSubtree(root1.right,root2);
+        }
+    };
+    private boolean helper(TreeNode root1,TreeNode root2){
+        if(root2 == null)
+            return true;
+        else if(root2 != null && root1 == null)
+            return false;
+        if(root1.val == root2.val){
+            if(root2.left == null && root2.right == null)
+                return true;
+            return helper(root1.left,root2.left) && helper(root1.right,root2.right);
+        }
+        else{
+            return false;
+        }
+    }
+}
