@@ -1,0 +1,33 @@
+输入一个链表，输出该链表中倒数第k个结点。
+
+思路：一个pre指针先走k次，两个指针一起走知道pre为空
+注意：k大于链表本身的长度的情况
+
+Java：
+/*
+public class ListNode {
+    int val;
+    ListNode next = null;
+
+    ListNode(int val) {
+        this.val = val;
+    }
+}*/
+public class Solution {
+    public ListNode FindKthToTail(ListNode head,int k) {
+        ListNode pre,ans;
+        pre = head;
+        ans = head;
+        while(k > 0 && pre != null){
+            pre = pre.next;
+            k--;
+        }
+        if(pre == null && k >0)
+            return null;
+        while(pre != null){
+            pre = pre.next;
+            ans = ans.next;
+        }
+        return ans;
+    }
+}
