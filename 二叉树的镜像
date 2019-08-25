@@ -1,3 +1,76 @@
 操作给定的二叉树，将其变换为源二叉树的镜像。
 
-思路：递归，跟之前那个判断是否是子结构差不多
+思路：递归，交换左右子树
+注意：不要忘了左右子树只有一个存在的情况下交换后要把原来的置为空（原来的思路要这样，如果把代码改成不管为不为空都交换就可以了）
+
+/**
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+ 
+    public TreeNode(int val) {
+        this.val = val;
+ 
+    }
+ 
+}
+*/
+public class Solution {
+    public void Mirror(TreeNode root) {
+        helper(root);
+    };
+     
+    private void helper(TreeNode root){
+        if(root == null)
+            return;
+        if(root.left != null){
+            TreeNode temp = root.left;
+            if(root.right != null){
+                root.left = root.right;
+                root.right = temp;
+                helper(root.left);
+                helper(root.right);
+                return;
+            }
+            else{
+                root.right = root.left;
+                root.left = null;
+                helper(root.right);
+                return;
+            }
+        }
+        if(root.right != null){//root.left == null
+            root.left = root.right;
+            root.right = null;
+            helper(root.left);
+            return;
+        }
+    }
+}
+
+/**
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+ 
+    public TreeNode(int val) {
+        this.val = val;
+ 
+    }
+ 
+}
+*/
+public class Solution {
+    public void Mirror(TreeNode root) {
+        if(root == null)
+            return;
+        TreeNode temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+        Mirror(root.left);
+        Mirror(root.right);
+        return;
+    }
+}
