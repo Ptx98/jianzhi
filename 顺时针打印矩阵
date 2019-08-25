@@ -1,0 +1,67 @@
+输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字，
+例如，如果输入如下4 X 4矩阵： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+则依次打印出数字1,2,3,4,8,12,16,15,14,13,9,5,6,7,11,10.
+
+
+我太难了，我太容易在分支和循环和递归的条件上出错了
+思路容易，一圈圈的递归遍历
+容易忘记考虑的细节有
+矩阵不代表是方阵
+向下，向右走的边要除去前一条边已经访问过的
+向上要除去前一条和第一条边
+！！！！我循环一开始条件居然写了0和rowlen,应该是row 和rowlen-row;col同理
+
+package com.ptx.solution;
+
+import java.util.ArrayList;
+
+public class dayinjuzhen {
+    public ArrayList<Integer> printMatrix(int [][] matrix) {
+        int rowlen = matrix.length;
+        int collen = matrix[0].length;
+        helper(matrix,0,0,rowlen,collen);
+        return ans;
+    }
+    private void helper(int [][] matrix, int row, int col, int rowlen,int collen){
+        if(rowlen == 0 && collen ==0)
+            return;
+        int i = row, j = col;
+        //右
+        while(j<collen+col){
+            ans.add(matrix[i][j++]);
+        }
+        j--;
+        i++;
+        if(i>=rowlen+row)
+            return;
+        //下
+        while(i<rowlen+row){
+            ans.add(matrix[i++][j]);
+        }
+        i--;
+        j--;
+        if(j<col)
+            return;
+        //左
+        while(j>=col){
+            ans.add(matrix[i][j--]);
+        }
+        j++;
+        i--;
+        if(i<=row)
+            return;
+        //上
+        while(i>row){
+            ans.add(matrix[i--][j]);
+        }
+        //递归内圈
+        if(rowlen-2>0 && collen-2>0)
+            helper(matrix,row+1,col+1,rowlen-2,collen-2);
+    }
+    public void output(){
+        for(int a:ans){
+            System.out.print(a);
+        }
+    }
+    private ArrayList<Integer> ans = new ArrayList();
+}
