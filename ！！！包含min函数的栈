@@ -1,0 +1,45 @@
+定义栈的数据结构，请在该类型中实现一个能够得到栈中所含最小元素的min函数（时间复杂度应为O（1））。
+
+
+思路：我开始想得太简单了，我觉得只要记录最小值，每次入栈时比较是否要修改最小值。
+写完之后发现我真的太蠢了，我写之前就不能考虑的仔细一点吗
+这真是一个毫无补救办法的错误思路
+
+我看了答案区，原来是有补救办法的
+
+不是记录整个栈的最小值是多少
+而是用另一个栈记录，从栈底到元素i的最小值是多少
+实现，入栈是和当前辅助栈栈顶的值比较，小于入辅助栈，大于等于辅助栈压入栈顶元素
+
+import java.util.Stack;
+
+public class Solution {
+    Stack<Integer> stackTotal = new Stack<Integer>();
+    Stack<Integer> stackLittle = new Stack<Integer>();
+
+    public void push(int node) {
+        stackTotal.push(node);
+        if(stackLittle.empty()){
+            stackLittle.push(node);
+        }else{
+            if(node <= stackLittle.peek()){
+                stackLittle.push(node);
+            }else{
+                stackLittle.push(stackLittle.peek());
+            }
+        }
+    }
+
+    public void pop() {
+        stackTotal.pop();
+        stackLittle.pop();
+    }
+
+    public int top() {
+        return stackTotal.peek();
+    }
+
+    public int min() {
+        return stackLittle.peek();
+    }
+}
