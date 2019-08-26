@@ -1,0 +1,30 @@
+输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。要求不能创建任何新的结点，只能调整树中结点指针的指向。
+
+思路：二叉搜索树中序遍历可以变成一个有序的数组，最终返回的双向链表中每一个节点的左指针指向上一个比它小的节点，右指针下一个比它大的节点
+1.可以先按中序遍历入栈，再依次出栈改变左右指针
+
+import java.util.Stack;
+public class Solution {
+    public TreeNode Convert(TreeNode pRootOfTree) {
+        helper(pRootOfTree);
+        TreeNode tail = stack.pop();
+        TreeNode tail1 = tail;
+        tail.right = pRootOfTree;
+        while(!stack.empty()){
+            TreeNode temp = stack.pop();
+            temp.left = stack.peek();
+            temp.right = tail;
+            tail = temp;
+        }
+        pRootOfTree.left = tail1;
+        return pRootOfTree;
+    }
+    private void helper(TreeNode pRootOfTree){
+        if(pRootOfTree == null)
+            return;
+        helper(pRootOfTree.left);
+        stack.push(pRootOfTree);
+        helper(pRootOfTree.right);
+    }
+    private Stack<TreeNode> stack = new Stack<TreeNode>();
+}
