@@ -1,0 +1,51 @@
+输入一颗二叉树的根节点和一个整数，打印出二叉树中结点值的和为输入整数的所有路径。
+路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。
+(注意: 在返回值的list中，数组长度大的数组靠前)
+
+思路：递归；既然没说节点值不包括负数，遍历到每个叶子节点
+注意：怎么保存路径
+我服了，我提交前能不能好好看一下代码，编译都要错几百遍
+import java.util.ArrayList;
+/**
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+public class Solution {
+    public ArrayList<ArrayList<Integer>> FindPath(TreeNode root,int target) {
+        
+        ArrayList<Integer> temp = new ArrayList<Integer>();
+        helper(root,0,target,temp);
+        return ans;
+    }
+    
+    public void helper(TreeNode root,int num,int target,ArrayList<Integer> temp){
+        if(root == null)
+            return;
+        num = num + root.val;
+        temp.add(root.val);
+        if(root.left == null && root.right == null){
+            if(num == target)
+                ans.add(temp);
+        }
+        else{
+            ArrayList<Integer> left = new ArrayList<Integer>();
+            ArrayList<Integer> right = new ArrayList<Integer>();
+            for(int i=0;i<temp.size();i++){
+                left.add(temp.get(i));
+                right.add(temp.get(i));
+            }
+            helper(root.left,num,target,left);
+            helper(root.right,num,target,right);
+        }
+    }
+    private ArrayList<ArrayList<Integer>> ans = new ArrayList<ArrayList<Integer>>();
+}
