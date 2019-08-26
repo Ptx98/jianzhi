@@ -8,15 +8,23 @@ public class Solution {
     public TreeNode Convert(TreeNode pRootOfTree) {
         helper(pRootOfTree);
         TreeNode tail = stack.pop();
+        tail.left = stack.peek();
         TreeNode tail1 = tail;
-        tail.right = pRootOfTree;
+        TreeNode head1 = null;
         while(!stack.empty()){
             TreeNode temp = stack.pop();
+            if(stack.empty()) {//如果没有这一步temp.left = stack.peek()会抛出异常
+                stack.push(tail1);
+                head1 = temp;
+            }
             temp.left = stack.peek();
             temp.right = tail;
             tail = temp;
+            if(stack.peek() == tail1)//如果没有这段无法跳出循环
+                stack.pop();
         }
-        pRootOfTree.left = tail1;
+        tail1.right = head1;
+        head1.left = tail1;
         return pRootOfTree;
     }
     private void helper(TreeNode pRootOfTree){
@@ -28,3 +36,29 @@ public class Solution {
     }
     private Stack<TreeNode> stack = new Stack<TreeNode>();
 }
+
+还是不行，我不懂为什么
+
+答案C++
+
+class Solution {
+public:    TreeNode* Convert(TreeNode* pRootOfTree){
+                if(pRootOfTree == nullptr) return nullptr;        
+                TreeNode* pre = nullptr;                 
+                convertHelper(pRootOfTree, pre);                 
+                TreeNode* res = pRootOfTree;        
+                while(res ->left)            
+                res = res ->left;        
+                return res;    
+            }         
+            void convertHelper(TreeNode* cur, TreeNode*& pre){
+                if(cur == nullptr)
+                    return;                 
+                convertHelper(cur ->left, pre);                 
+                cur ->left = pre;        
+                if(pre) 
+                    pre ->right = cur;        
+                pre = cur;                 
+                convertHelper(cur ->right, pre);                               
+            }
+};
